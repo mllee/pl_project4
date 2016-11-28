@@ -1,7 +1,12 @@
 struct Sudoku{
 	//board:[mut [mut 0u8, ..9], ..9],
+	//board: [[u8;9];9]
 	board: Vec<Vec<u8>>
 	// TODO: Im not sure that this works. See comments in the constructors
+}
+
+fn main() {
+	print!("main");
 }
 
 impl Sudoku {
@@ -9,7 +14,7 @@ impl Sudoku {
 	//Struggling to put a mutable array of arrays here
 	fn new() -> Sudoku{
 		Sudoku{
-			board:[[0u8, ..9] ..9] 
+			board:vec![vec![0;9];9]
 			//board:[[0;9],..9] 
 		}
 	} 
@@ -19,7 +24,9 @@ impl Sudoku {
 	//}
 
 	//The main solving method
-	fn solve() -> bool {}
+	fn solve() -> bool {
+		return true
+	}
 
 	//Given a vector of numbers, returns whether or not duplicates exist
 	//by sorting and filtering out duplicates.
@@ -35,7 +42,7 @@ impl Sudoku {
 	//Helper method for is_valid
 	//Checks if all rows in the board are valid
 	fn check_row(&self) -> bool { 
-		for row in self.board {
+		for row in self.board.iter().cloned() {
 			if self.check_array(row) != true {
 				return false;
 			}
@@ -50,7 +57,7 @@ impl Sudoku {
 			for j in 0..9 {
 				buffer.push(self.board[j][i]);
 			}
-			if self.check_array(buffer) != true {
+			if self.check_array(buffer.clone()) != true {
 				return false;
 			}
 			buffer.truncate(0);
@@ -78,7 +85,7 @@ impl Sudoku {
 
 	//Checks if board is valid.
 	fn is_valid(&self,x: usize, y:usize) -> bool {
-		self.check_boxes(x,y) && self.check_col() && self.check_row();
+		self.check_boxes(x,y) && self.check_col() && self.check_row()
 	}
 
 	//print out the solution
