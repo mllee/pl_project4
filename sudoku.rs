@@ -17,6 +17,7 @@ impl Sudoku {
 	fn solve() -> bool {}
 
 	//Helper method for is_valid
+	//Checks if all rows in the board are valid
 	fn check_row() -> bool { 
 		for row in self.board {
 			if check_array(row) != true {
@@ -26,6 +27,7 @@ impl Sudoku {
 		return true;
 	}
 	//Helper method for is_valid
+	//Checks if all columns in the board are valid
 	fn check_col() -> bool {
 		let mut buffer = Vec::new();
 		for i in 0..9 {
@@ -39,7 +41,11 @@ impl Sudoku {
 		}
 		return true;
 	}
+
 	//Helper method for is_valid
+	//Given an x,y position, checks if that subbox is valid
+	//Note that unlike check row/col, this only checks the individual 
+	//box, not the entire board
 	fn check_boxes(x:usize,y:usize) -> bool {
 		let mut superrow = (x/3)*3;
 		let mut supercol = (y/3)*3;
@@ -53,7 +59,8 @@ impl Sudoku {
 	}
 
 	//Given a vector of numbers, returns whether or not duplicates exist
-	//by sorting and filtering out duplicates
+	//by sorting and filtering out duplicates.
+	//Dont talk to me about time complexity.
 	fn check_array(&self, vector) -> {
 		let mut vec = vector.clone();
 		vec.sort();
