@@ -7,6 +7,16 @@ struct Sudoku{
 
 fn main() {
 	print!("main");
+	let mut test = Sudoku::new();
+	for x in 0..9 {
+		 test.board[x] = vec![1, 2, 0, 4, 5, 6, 7, 8, 9];
+	}
+	if test.check_row() {
+		print!("rows pass")
+	}
+	else {
+		print!("rows fail")
+	}
 }
 
 impl Sudoku {
@@ -14,11 +24,10 @@ impl Sudoku {
 	//Struggling to put a mutable array of arrays here
 	fn new() -> Sudoku{
 		Sudoku{
-			board:vec![vec![0;9];9]
+			board: vec![ vec![0;9];9]
 			//board:[[0;9],..9] 
 		}
 	} 
-	//I dont know how to make a constructor -matt 
 
 	//fn get(&self, row: usize, col: usize) -> int u8 {
 	//}
