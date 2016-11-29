@@ -6,7 +6,7 @@ struct Sudoku{
 }
 
 fn main() {
-	print!("main");
+	print!("main\n");
 	let mut test = Sudoku::new();
 	for x in 0..9 {
 		 test.board[x] = vec![1, 2, 0, 4, 5, 6, 7, 8, 9];
@@ -41,16 +41,20 @@ impl Sudoku {
 	//by sorting and filtering out duplicates.
 	//Dont talk to me about time complexity.
 	fn check_array(&self, vector:Vec<u8>) -> bool {
-		let mut vec = vector.clone();
-		vec.sort();
-		vec.retain(|&i|i != 0);
-		vec.dedup();
-		return vec.len() == vector.len()
+		let mut vec1 = vector.clone();
+		vec1.sort();
+		vec1.retain(|&i|i != 0);
+		let mut vec2 = vec1.clone();
+		vec1.dedup();
+		println!("{:?}",vec2.len());
+		println!("{:?}",vec2.len());
+		return vec1.len() == vec2.len();
 	}
 
 	//Helper method for is_valid
 	//Checks if all rows in the board are valid
 	fn check_row(&self) -> bool { 
+		//for row in self.board.iter().cloned() {
 		for row in self.board.iter().cloned() {
 			if self.check_array(row) != true {
 				return false;
