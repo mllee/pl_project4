@@ -1,3 +1,8 @@
+use std::fs::File;
+use std::io::Read;
+use std::io::BufReader;
+use std::io::BufRead;
+
 struct Sudoku{
 	//board:[mut [mut 0u8, ..9], ..9],
 	//board: [[u8;9];9]
@@ -8,9 +13,7 @@ struct Sudoku{
 fn main() {
 	print!("main\n");
 	let mut test = Sudoku::new();
-	for x in 0..9 {
-		 test.board[x] = vec![1, 2, 0, 4, 5, 6, 7, 8, 9];
-	}
+	test.load_board();
 	if test.check_row() {
 		print!("rows pass")
 	}
@@ -29,12 +32,12 @@ impl Sudoku {
 		}
 	} 
     
-    fn load_board() {
-        let f = File::open("/Users/Mimi/Documents/School Things/College/Junior Year/Semester 1/CS3270 - Programming Languages/Homework/hw7/sudoku.txt").unwrap();
+    fn load_board(&mut self) {
+        let f = File::open("C:\\cs270\\rust\\pl_project4\\sudoku.txt").unwrap();
 
         let file = BufReader::new(&f);
 
-        let vv: Vec<Vec<i32>> = file.lines()
+        let vv: Vec<Vec<u8>> = file.lines()
         .filter_map(
             |l| l.ok().map(
                 |s| s.split_whitespace()
@@ -119,7 +122,7 @@ impl Sudoku {
 	}
 
 	//prints out the board
-	fn print() {
+	fn print(&self) {
      for i in 0..9 {
 			for j in 0..9 {
 				print!("{} ", self.board[i][j]);
