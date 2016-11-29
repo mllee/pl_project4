@@ -14,12 +14,8 @@ fn main() {
 	print!("main\n");
 	let mut test = Sudoku::new();
 	test.load_board();
-	if test.check_row() {
-		print!("rows pass")
-	}
-	else {
-		print!("rows fail")
-	}
+	test.solve(0);
+	test.print();
 }
 
 impl Sudoku {
@@ -53,8 +49,23 @@ impl Sudoku {
 	//}
 
 	//The main solving method
-	fn solve() -> bool {
-		return true
+	fn solve(&mut self,index:u32) -> bool {
+		if index == 81 {
+			return true;
+		}
+		let row:u32 = index/9;
+		let col:u32 = index%9;
+		if self.board[row as usize][col as usize] != 0 {
+			return self.solve(index+1);
+		} 
+		for guess in 1..10 {
+			self.board[row as usize][col as usize] = guess;
+			if self.is_valid(row as usize,col as usize) && self.solve(index+1) {
+				return true;
+			}
+		}
+		self.board[row as usize][col as usize] = 0;
+		return false;
 	}
 
 	//Given a vector of numbers, returns whether or not duplicates exist
@@ -66,8 +77,8 @@ impl Sudoku {
 		vec1.retain(|&i|i != 0);
 		let mut vec2 = vec1.clone();
 		vec1.dedup();
-		println!("{:?}",vec2.len());
-		println!("{:?}",vec2.len());
+		//println!("{:?}",vec2.len());
+		//println!("{:?}",vec2.len());
 		return vec1.len() == vec2.len();
 	}
 
