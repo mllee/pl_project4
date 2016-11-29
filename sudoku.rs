@@ -28,6 +28,23 @@ impl Sudoku {
 			//board:[[0;9],..9] 
 		}
 	} 
+    
+    fn load_board() {
+        let f = File::open("/Users/Mimi/Documents/School Things/College/Junior Year/Semester 1/CS3270 - Programming Languages/Homework/hw7/sudoku.txt").unwrap();
+
+        let file = BufReader::new(&f);
+
+        let vv: Vec<Vec<i32>> = file.lines()
+        .filter_map(
+            |l| l.ok().map(
+                |s| s.split_whitespace()
+                     .filter_map(|word| word.parse().ok())
+                     .collect()))
+        .collect();
+
+        self.board = vv;
+    }
+
 
 	//fn get(&self, row: usize, col: usize) -> int u8 {
 	//}
@@ -101,6 +118,22 @@ impl Sudoku {
 		self.check_boxes(x,y) && self.check_col() && self.check_row()
 	}
 
-	//print out the solution
-	fn print() {}
+	//prints out the board
+	fn print() {
+     for i in 0..9 {
+			for j in 0..9 {
+				print!("{} ", self.board[i][j]);
+                if j == 2 || j == 5 {
+                    print!("| ");
+                }
+			}
+            if i == 2 || i == 5 {
+                println!("\n------+-------+------");
+            }
+            else{
+                println!("");
+            }
+		}
+    
+    }
 }
