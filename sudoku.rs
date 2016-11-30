@@ -1,6 +1,6 @@
 // Sudoku Solver in rust
 // Programming Languages
-// Written by Matt Lee, Richard (Max) Kerr, and Michelle Fang
+// Written by Matt Lee, Richard (Max) Kerr, and Michelle (Mimi) Fang
 // We did not receive unauthorized aid in completing this assignment
 
 
@@ -17,8 +17,17 @@ fn main() {
 	print!("main\n");
 	let mut test = Sudoku::new();
 	test.load_board();
-	test.solve(0);
-	test.print();
+    
+    println!("Unsolved board:");
+    test.print();
+    
+	if test.solve(0){
+    	println!("\nSolved board:");
+        test.print();
+    } else {
+        println!("\nNo solution!");
+    }
+
 }
 
 impl Sudoku {
@@ -30,7 +39,9 @@ impl Sudoku {
     
 	//Loads the sudoku board from a text file into class variable
     fn load_board(&mut self) {
-        let f = File::open("C:\\cs270\\rust\\pl_project4\\sudoku.txt").unwrap();
+        let path = "/Users/Mimi/Documents/School Things/College/Junior Year/Semester 1/CS3270 - Programming Languages/Project 4/pl_project4/sudoku.txt";
+    
+        let f = File::open(path).unwrap();
         let file = BufReader::new(&f);
 
         let vv: Vec<Vec<u8>> = file.lines()
