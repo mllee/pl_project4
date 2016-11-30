@@ -1,3 +1,8 @@
+use std::fs::File;
+use std::io::Read;
+use std::io::BufReader;
+use std::io::BufRead;
+
 struct Sudoku{
 	//board:[mut [mut 0u8, ..9], ..9],
 	//board: [[u8;9];9]
@@ -8,21 +13,9 @@ struct Sudoku{
 fn main() {
 	print!("main\n");
 	let mut test = Sudoku::new();
-	test.board[0] = vec![0,0,0,0,0,0,0,0,0];
-	test.board[1] = vec![0,0,0,0,0,0,0,0,0];
-	test.board[2] = vec![0,0,0,0,0,0,0,0,0];
-	test.board[3] = vec![0,0,0,1,2,3,0,0,0];
-	test.board[4] = vec![0,0,0,9,4,5,0,0,0];
-	test.board[5] = vec![0,0,0,8,7,6,0,0,0];
-	test.board[6] = vec![0,0,0,0,0,0,0,0,0];
-	test.board[7] = vec![0,0,0,0,0,0,0,3,0];
-	test.board[8] = vec![0,0,0,0,0,0,0,3,0];
-	if test.check_boxes(8,8) {
-		print!("boxes pass")
-	}
-	else {
-		print!("boxes fail")
-	}
+	test.load_board();
+	test.solve(0);
+	test.print();
 }
 
 impl Sudoku {
@@ -34,13 +27,45 @@ impl Sudoku {
 			//board:[[0;9],..9] 
 		}
 	} 
+    
+    fn load_board(&mut self) {
+        let f = File::open("C:\\cs270\\rust\\pl_project4\\sudoku.txt").unwrap();
+
+        let file = BufReader::new(&f);
+
+        let vv: Vec<Vec<u8>> = file.lines()
+        .filter_map(
+            |l| l.ok().map(
+                |s| s.split_whitespace()
+                     .filter_map(|word| word.parse().ok())
+                     .collect()))
+        .collect();
+
+        self.board = vv;
+    }
+
 
 	//fn get(&self, row: usize, col: usize) -> int u8 {
 	//}
 
 	//The main solving method
-	fn solve() -> bool {
-		return true
+	fn solve(&mut self,index:u32) -> bool {
+		if index == 81 {
+			return true;
+		}
+		let row:u32 = index/9;
+		let col:u32 = index%9;
+		if self.board[row as usize][col as usize] != 0 {
+			return self.solve(index+1);
+		} 
+		for guess in 1..10 {
+			self.board[row as usize][col as usize] = guess;
+			if self.is_valid(row as usize,col as usize) && self.solve(index+1) {
+				return true;
+			}
+		}
+		self.board[row as usize][col as usize] = 0;
+		return false;
 	}
 
 	//Given a vector of numbers, returns whether or not duplicates exist
@@ -52,8 +77,8 @@ impl Sudoku {
 		vec1.retain(|&i|i != 0);
 		let mut vec2 = vec1.clone();
 		vec1.dedup();
-		println!("{:?}",vec2.len());
-		println!("{:?}",vec2.len());
+		//println!("{:?}",vec2.len());
+		//println!("{:?}",vec2.len());
 		return vec1.len() == vec2.len();
 	}
 
@@ -107,6 +132,22 @@ impl Sudoku {
 		self.check_boxes(x,y) && self.check_col() && self.check_row()
 	}
 
-	//print out the solution
-	fn print() {}
+	//prints out the board
+	fn print(&self) {
+     for i in 0..9 {
+			for j in 0..9 {
+				print!("{} ", self.board[i][j]);
+                if j == 2 || j == 5 {
+                    print!("| ");
+                }
+			}
+            if i == 2 || i == 5 {
+                println!("\n------+-------+------");
+            }
+            else{
+                println!("");
+            }
+		}
+    
+    }
 }
