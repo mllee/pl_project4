@@ -1,13 +1,16 @@
+// Sudoku Solver in rust
+// Programming Languages
+// Written by Matt Lee, Richard (Max) Kerr, and Michelle Fang
+// We did not receive unauthorized aid in completing this assignment
+
+
 use std::fs::File;
 use std::io::Read;
-use std::io::BufReader;
+use std::io::BufReader; 
 use std::io::BufRead;
 
 struct Sudoku{
-	//board:[mut [mut 0u8, ..9], ..9],
-	//board: [[u8;9];9]
 	board: Vec<Vec<u8>>
-	// TODO: Im not sure that this works. See comments in the constructors
 }
 
 fn main() {
@@ -19,18 +22,15 @@ fn main() {
 }
 
 impl Sudoku {
-	//TODO: Fix initialization here
-	//Struggling to put a mutable array of arrays here
 	fn new() -> Sudoku{
 		Sudoku{
 			board: vec![ vec![0;9];9]
-			//board:[[0;9],..9] 
 		}
 	} 
     
+	//Loads the sudoku board from a text file into class variable
     fn load_board(&mut self) {
         let f = File::open("C:\\cs270\\rust\\pl_project4\\sudoku.txt").unwrap();
-
         let file = BufReader::new(&f);
 
         let vv: Vec<Vec<u8>> = file.lines()
@@ -43,10 +43,6 @@ impl Sudoku {
 
         self.board = vv;
     }
-
-
-	//fn get(&self, row: usize, col: usize) -> int u8 {
-	//}
 
 	//The main solving method
 	fn solve(&mut self,index:u32) -> bool {
@@ -70,22 +66,18 @@ impl Sudoku {
 
 	//Given a vector of numbers, returns whether or not duplicates exist
 	//by sorting and filtering out duplicates.
-	//Dont talk to me about time complexity.
 	fn check_array(&self, vector:Vec<u8>) -> bool {
 		let mut vec1 = vector.clone();
 		vec1.sort();
 		vec1.retain(|&i|i != 0);
 		let mut vec2 = vec1.clone();
 		vec1.dedup();
-		//println!("{:?}",vec2.len());
-		//println!("{:?}",vec2.len());
 		return vec1.len() == vec2.len();
 	}
 
 	//Helper method for is_valid
 	//Checks if all rows in the board are valid
 	fn check_row(&self) -> bool { 
-		//for row in self.board.iter().cloned() {
 		for row in self.board.iter().cloned() {
 			if self.check_array(row) != true {
 				return false;
@@ -124,8 +116,6 @@ impl Sudoku {
 		}
 		return self.check_array(subbox);
 	}
-
-
 
 	//Checks if board is valid.
 	fn is_valid(&self,x: usize, y:usize) -> bool {
