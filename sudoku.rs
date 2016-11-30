@@ -8,14 +8,20 @@ struct Sudoku{
 fn main() {
 	print!("main\n");
 	let mut test = Sudoku::new();
-	for x in 0..9 {
-		 test.board[x] = vec![1, 2, 0, 4, 5, 6, 7, 8, 9];
-	}
-	if test.check_row() {
-		print!("rows pass")
+	test.board[0] = vec![0,0,0,0,0,0,0,0,0];
+	test.board[1] = vec![0,0,0,0,0,0,0,0,0];
+	test.board[2] = vec![0,0,0,0,0,0,0,0,0];
+	test.board[3] = vec![0,0,0,1,2,3,0,0,0];
+	test.board[4] = vec![0,0,0,9,4,5,0,0,0];
+	test.board[5] = vec![0,0,0,8,7,6,0,0,0];
+	test.board[6] = vec![0,0,0,0,0,0,0,0,0];
+	test.board[7] = vec![0,0,0,0,0,0,0,3,0];
+	test.board[8] = vec![0,0,0,0,0,0,0,3,0];
+	if test.check_boxes(8,8) {
+		print!("boxes pass")
 	}
 	else {
-		print!("rows fail")
+		print!("boxes fail")
 	}
 }
 
